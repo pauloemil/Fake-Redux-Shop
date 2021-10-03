@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectedProduct,
+  fetchProduct,
   removeSelectedProduct,
 } from "../redux/actions/ProductActions";
 function ProductDetails() {
@@ -12,17 +11,9 @@ function ProductDetails() {
   const dispatch = useDispatch();
   const product = useSelector((state) => state.product);
   const { image, title, price, category, description } = product;
-  console.log(product);
-  const fetchProductDetails = () => {
-    axios
-      .get(`https://fakestoreapi.com/products/${productID}`)
-      .then((resp) => {
-        dispatch(selectedProduct(resp.data));
-      })
-      .catch((error) => console.log("Error: ", error));
-  };
+
   useEffect(() => {
-    if (productID && productID !== "") fetchProductDetails();
+    if (productID && productID !== "") dispatch(fetchProduct(productID));
     return () => {
       dispatch(removeSelectedProduct());
     };
